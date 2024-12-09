@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React from 'react'
-import BookModel from "../../../models/BookModel";
+import BookModel from '../../../models/BookModel';
 
 export const ReturnBook: React.FC<{book: BookModel}> = (props) => {
   
@@ -10,16 +11,14 @@ export const ReturnBook: React.FC<{book: BookModel}> = (props) => {
                 <div className="text-center">
                   {props.book.img ? 
                     <img
-                    src={require(props.book.img)} //+
+                    src={props.book.img}
                     width="151"
                     height="233"
                     alt="book"
                   />
                     :
-
-                   
                   <img
-                    src={require("./../../../Images/BooksImages/book-luv2code-1000.png")} //+
+                    src={require("./../../../Images/BooksImages/book-luv2code-1000.png")} 
                     width="151"
                     height="233"
                     alt="book"
