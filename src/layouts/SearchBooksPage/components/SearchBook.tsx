@@ -1,3 +1,5 @@
+import BookModel from "../../../models/BookModel";
+
 /* eslint-disable jsx-a11y/anchor-is-valid */
 export const SearchBook: React.FC<{ book: BookModel }> = (props) => {
   return (
@@ -19,14 +21,30 @@ export const SearchBook: React.FC<{ book: BookModel }> = (props) => {
               />
             )}
           </div>
+          <div className='d-lg-none d-flex 
+          justify-content-center align-items-center'>
+            {props.book.img ? (
+              <img src={props.book.img} 
+              width="123" 
+              height="196" 
+              alt="Book" />
+            ) : (
+              <img
+                src={require("./../../../Images/BooksImages/book-luv2code-1000.png")}
+                width="123"
+                height="196"
+                alt="Book"
+              />
+            )}
+          </div>
         </div>
         <div className='col-md-6'>
             <div className="card-body">
-                <h5 className="card-title">{props.book.title}
-
+                <h5 className="card-title">
+                    {props.book.author}
                 </h5>
                 <h4>
-                    {props.book.author}
+                    {props.book.title}
                 </h4>
                 <p className="card-text">
                     {props.book.description}
