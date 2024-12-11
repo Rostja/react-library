@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-const-assign */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from "react";
@@ -14,11 +16,20 @@ export const SearchBooksPage = () => {
   const [booksPerPage] = useState(5);
   const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [search, setSearch] = useState('');
+  const [searchUrl, setSearchUrl] = useState('');
 
   useEffect(() => {
     const fetchBooks = async () => {
       const baseUrl: string = "http://localhost:8080/api/books";
-      const url: string = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+      let url: string = '';
+
+        if(searchUrl === ''){
+            url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+        } else {
+            url = baseUrl + searchUrl;
+        }
+
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -51,7 +62,8 @@ export const SearchBooksPage = () => {
       setIsLoading(false);
       setHttpError(error.message);
     });
-  }, []);
+    window.scrollTo(0, 0);
+  }, [currentPage, searchUrl]);
 
   if (isLoading) {
     return <SpinnerLoading />;
@@ -63,6 +75,13 @@ export const SearchBooksPage = () => {
         <p>{httpError}</p>
       </div>
     );
+  }
+  const searchHandleChange = () => {
+    if (search === ''){
+        setSearchUrl('');
+    } else {
+        setSearchUrl(`/search/findByTitleContaining?title=${search}&page=0&size=${booksPerPage}`);
+    }
   }
 
   const indexOfLastBook : number = currentPage * booksPerPage;
@@ -83,8 +102,10 @@ export const SearchBooksPage = () => {
                   className="form-control me-2"
                   placeholder="Search"
                   aria-labelledby="Search"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <button className="btn btn-outline-success">Search</button>
+                <button className="btn btn-outline-success"
+                onClick={() => searchHandleChange()}>Search</button>
               </div>
             </div>
             <div className="col-4">
@@ -132,9 +153,9 @@ export const SearchBooksPage = () => {
             </div>
           </div>
           <div className="mt-3">
-            <h5>Number of results: (22)</h5>
+            <h5>Number of results: ({totalAmountOfBooks})</h5>
           </div>
-          <p>1 to 5 of 22 items:</p>
+          <p>{indexOfFirstBook + 1} to {lastItem} of 22 items:</p>
           {books.map((book) => (
             <SearchBook key={book.id} book={book} />
           ))}
