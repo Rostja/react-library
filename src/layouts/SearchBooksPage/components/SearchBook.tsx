@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-undef */
+import { Link } from "react-router-dom";
 import BookModel from "../../../models/BookModel";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -52,9 +54,9 @@ export const SearchBook: React.FC<{ book: BookModel }> = (props) => {
             </div>
         </div>
         <div className="col-md-4 d-flex justify-content-center align-items-center">
-            <a className='btn btn-md main-color text-white' href="#">
-                View details
-            </a>
+            <Link className='btn btn-md main-color text-white' to={`/checkout/${props.book.id}`}>
+              View details
+            </Link>
         </div>
       </div>
     </div>
