@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 /* eslint-disable jsx-a11y/anchor-is-valid */
 export const Footer = () => {
   return (
@@ -9,14 +11,14 @@ export const Footer = () => {
         <p className="col-md-4 mb-0 text-white">© E-Library App, Inc</p>
         <ul className="nav navbar-dark col-md-4 justify-content-end">
           <li className="nav-item">
-            <a href="#" className="nav-link px-2 text-white">
+            <Link href="#" className="nav-link px-2 text-white" to="/home">
               Home
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link px-2 text-white">
+            <Link className="nav-link px-2 text-white" to="/search">
               Search Books
-            </a>
+            </Link>
           </li>
         </ul>
       </footer>
