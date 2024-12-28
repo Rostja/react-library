@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { useEffect, useState } from "react";
 import BookModel from "../../models/BookModel";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
@@ -8,8 +9,11 @@ import { StarReview } from "../Utils/StarReview";
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import ReviewModel from "../../models/ReviewModel";
 import { LatestReviews } from "./LatestReviews";
+import { useOktaAuth } from "@okta/okta-react";
 
 export const BookCheckoutPage = () => {
+
+    const {authState} = useOktaAuth();
 
     const [book, setBook] = useState<BookModel>();
     const [isLoading, setIsLoading] = useState(true);
@@ -20,6 +24,10 @@ export const BookCheckoutPage = () => {
     const[reviews, setReviews] = useState<ReviewModel[]>([]);
     const[totalStars, setTotalStars] = useState(0);
     const[isLoadingReview, setIsLoadingReview] = useState(true);
+
+    // Loans Count State
+    const [currentLoansCount, setCurrentLoansCount] = useState(0);
+    const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] = useState(true);
 
     const bookId = (window.location.pathname).split('/')[2];
 
@@ -100,6 +108,16 @@ export const BookCheckoutPage = () => {
           setHttpError(error.message);
         })
       }, []);
+
+      useEffect(() => {
+        const fetchUserCurrentLoansCount = async () => {
+         
+        }
+        fetchUserCurrentLoansCount().catch((error: any) => {                   
+          setIsLoadingCurrentLoansCount(false);
+          setHttpError(error.message);
+        })
+      }, [authState]);
 
       if(isLoading || isLoadingReview) {
         return (
