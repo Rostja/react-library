@@ -288,7 +288,7 @@ export const BookCheckoutPage = () => {
                     <div className="mt-2">
                         <h2>{book?.title}</h2>
                         <h5 className="text-primary">{book?.author}</h5>
-                        <p className="lead">{book?.description}</p>
+                        <p className="lead">{book?.description}</p>v
                         <StarReview rating={totalStars} size={32}/>
                     </div>
                 </div>
