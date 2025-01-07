@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/aria-props */
 import ShelfCurrentLoans from "../../../models/ShelfCurrentLoans";
-import { ReturnBook } from "../../HomePage/components/ReturnBook";
+
 
 export const LoansModal: React.FC<{ shelfCurrentLoan: ShelfCurrentLoans, mobile: boolean, returnBook: any,
     renewLoan: any
