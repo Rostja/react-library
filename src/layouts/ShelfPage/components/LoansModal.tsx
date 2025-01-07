@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/aria-props */
 import ShelfCurrentLoans from "../../../models/ShelfCurrentLoans";
 import { ReturnBook } from "../../HomePage/components/ReturnBook";
 
-export const LoansModal: React.FC<{ shelfCurrentLoan: ShelfCurrentLoans, mobile: boolean, returnBook: any }> = (props) => {
+export const LoansModal: React.FC<{ shelfCurrentLoan: ShelfCurrentLoans, mobile: boolean, returnBook: any,
+    renewLoan: any
+ }> = (props) => {
     return (
         <div className="modal fade" id={props.mobile ? `mobilemodal${props.shelfCurrentLoan.book.id}` :
         `modal${props.shelfCurrentLoan.book.id}`} data-bs-backdrop="static" data-bs-keyboard="false"
@@ -64,7 +67,10 @@ export const LoansModal: React.FC<{ shelfCurrentLoan: ShelfCurrentLoans, mobile:
                                                     aria-current="true">
                                                         Return Book
                                                     </button>
-                                                    <button data-bs-dismiss='modal' 
+                                                    <button onClick={ props.shelfCurrentLoan.daysLeft < 0 ? (event) => event.preventDefault()
+                                                        :
+                                                        () => props.renewLoan(props.shelfCurrentLoan.book.id)
+                                                    } data-bs-dismiss='modal' 
                                                             className={
                                                             props.shelfCurrentLoan.daysLeft < 0 ?
                                                             'list-group-item list-group-item-action inactiveLink' :
