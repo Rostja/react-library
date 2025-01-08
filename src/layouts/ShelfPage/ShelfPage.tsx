@@ -1,6 +1,11 @@
+import { useState } from "react";
+import { HistoryPage } from "./components/HistoryPage";
 import { Loans } from "./components/Loans";
 
 export const ShelfPage = () => {
+
+    const [historyClick, setHistoryClick] = useState(false);
+
     return(
         <div className="container">
             <div className="mt-3">
@@ -24,7 +29,7 @@ export const ShelfPage = () => {
                     </div>
                     <div className="tab-pane fade" id="nav-history" role="tabpanel"
                         aria-labelledby="nav-history-tab">
-                            <p>Checkout History</p>
+                            {historyClick ? <HistoryPage/> : <></>}
                     </div>
                 </div>
             </div>
