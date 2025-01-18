@@ -3,14 +3,17 @@ package com.eshop.spring_boot_library.service;
 import com.eshop.spring_boot_library.dao.BookRepository;
 import com.eshop.spring_boot_library.dao.CheckoutRepository;
 import com.eshop.spring_boot_library.dao.HistoryRepository;
+import com.eshop.spring_boot_library.dao.PaymentRepository;
 import com.eshop.spring_boot_library.entity.Book;
 import com.eshop.spring_boot_library.entity.Checkout;
 import com.eshop.spring_boot_library.entity.History;
+import com.eshop.spring_boot_library.entity.Payment;
 import com.eshop.spring_boot_library.responsemodels.ShelfCurrentLoansResponse;
+import com.fasterxml.jackson.databind.DatabindException;
+import org.apache.tomcat.jni.Time;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,10 +32,14 @@ public class BookService {
 
     private HistoryRepository historyRepository;
 
-    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository) {
+    private PaymentRepository paymentRepository;
+
+    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository,
+                       HistoryRepository historyRepository, PaymentRepository paymentRepository) {
         this.historyRepository = historyRepository;
         this.bookRepository = bookRepository;
         this.checkoutRepository = checkoutRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public Book checkoutBook (String userEmail, Long bookId) throws Exception {
@@ -42,6 +49,39 @@ public class BookService {
         if (!book.isPresent() || validateCheckout!= null || book.get().getCopiesAvailable() <= 0) {
             throw new Exception("Book does not exist or already checked out by user");
         }
+
+        List<Checkout> currentBooksCheckedOut = checkoutRepository.findBooksByUserEmail(userEmail);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        boolean bookNeedReturned = false;
+
+        for (Checkout checkout: currentBooksCheckedOut) {
+            Date d1 =sdf.parse(checkout.getReturnDate());
+            Date d2 = sdf.parse(LocalDate.now().toString());
+
+            TimeUnit time = TimeUnit.DAYS;
+
+            double differenceInTime = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
+            if (differenceInTime < 0){
+                bookNeedReturned = true;
+                break;
+            }
+        }
+
+        Payment userPayment = paymentRepository.findByUserEmail(userEmail);
+
+        if ((userPayment != null && userPayment.getAmount() > 0) || (userPayment != null && bookNeedReturned)){
+            throw new Exception("Outstanding fees");
+        }
+
+        if (userPayment == null) {
+            Payment payment = new Payment();
+            payment.setAmount(00.00);
+            payment.setUserEmail(userEmail);
+            paymentRepository.save(payment);
+        }
+
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() - 1);
         bookRepository.save(book.get());
 
