@@ -1,8 +1,6 @@
 package com.eshop.spring_boot_library.entity;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 
 @Entity

@@ -1,3 +1,3 @@
 FROM openjdk:17
-ADD target/spring-boot-library.jar spring-boot-library.jar
-ENTRYPOINT ["java","-jar","/spring-boot-library.jar"]
+ADD target/springboot-mysql-docker.jar springboot-mysql-docker.jar
+ENTRYPOINT ["java","-jar","/springboot-mysql-docker.jar"]
