@@ -59,6 +59,10 @@ class BookRepositoryTest {
 
     }
 
+    @AfterEach
+    void tearDown() {
+        bookRepository.deleteAll();
+    }
 
     @Test
     void findByTitleContaining() {
@@ -133,10 +137,4 @@ class BookRepositoryTest {
         assertEquals(0, books.getTotalElements());
     }
 
-
-
-    @AfterEach
-    void tearDown() {
-        bookRepository.deleteAll();
-    }
 }
