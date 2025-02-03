@@ -1,12 +1,16 @@
 package com.eshop.spring_boot_library.entity;
 
+import com.eshop.spring_boot_library.requestmodels.AddBookRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name="book")
 @Data
-public class Book {
+public class Book extends AddBookRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

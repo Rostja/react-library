@@ -11,4 +11,5 @@ public class AddBookRequest {
     private int copies;
     private String category;
     private String img;
+
 }
