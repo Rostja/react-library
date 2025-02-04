@@ -42,13 +42,6 @@ class AdminServiceTest{
         autoCloseable.close();
     }
 
-
-    public void close() throws Exception{
-        if (autoCloseable!= null){
-            autoCloseable.close();
-        }
-    }
-
     @Test
     void increaseBookQuantity_Success() throws Exception {
         //given
