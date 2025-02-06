@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
+
     private BookService bookService;
 
     @Autowired
@@ -21,21 +22,22 @@ public class BookController {
     }
 
     @GetMapping("/secure/currentloans")
-    public List<ShelfCurrentLoansResponse> currentLoans(@RequestHeader(value = "Authorization") String token) throws Exception
+    public List<ShelfCurrentLoansResponse> currentLoans(@RequestHeader(value = "Authorization") String token)
+            throws Exception
     {
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.currentLoans(userEmail);
     }
 
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount(@RequestHeader(value = "Authorization") String token){
-        String userEmail = "testuser@email.com";
+    public int currentLoansCount(@RequestHeader(value = "Authorization") String token) {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.currentLoansCount(userEmail);
     }
 
     @GetMapping("/secure/ischeckedout/byuser")
     public Boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,
-                                      @RequestParam Long bookId){
+                                      @RequestParam Long bookId) {
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
@@ -43,9 +45,10 @@ public class BookController {
     @PutMapping("/secure/checkout")
     public Book checkoutBook (@RequestHeader(value = "Authorization") String token,
                               @RequestParam Long bookId) throws Exception {
-        String userEmail = "testuser@email.com";
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBook(userEmail, bookId);
     }
+
     @PutMapping("/secure/return")
     public void returnBook(@RequestHeader(value = "Authorization") String token,
                            @RequestParam Long bookId) throws Exception {
@@ -53,10 +56,11 @@ public class BookController {
         bookService.returnBook(userEmail, bookId);
     }
 
-    @PostMapping("/secure/renew/loan")
+    @PutMapping("/secure/renew/loan")
     public void renewLoan(@RequestHeader(value = "Authorization") String token,
                           @RequestParam Long bookId) throws Exception {
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         bookService.renewLoan(userEmail, bookId);
     }
+
 }
